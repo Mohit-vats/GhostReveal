@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
 
-from routes.predict import predict_router
+from backend.app.routes.predict import predict_router
 
 app = FastAPI()
 

@@ -1,7 +1,8 @@
 from fastapi import APIRouter,File,UploadFile
 from PIL import Image , UnidentifiedImageError
 
-from utils.predict_utils import validateImageType
+from backend.app.utils.predict_utils import validateImageType
+
 
 predict_router = APIRouter(prefix="/predict")
 
