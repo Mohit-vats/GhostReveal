@@ -2,7 +2,10 @@ from fastapi import APIRouter,File,UploadFile
 from PIL import Image , UnidentifiedImageError
 
 from backend.app.utils.predict_utils import validateImageType
-
+from models.dummy_model import dummy_model
+model = dummy_model() # object of dummy model to use for prediction
+from models.dummy_preprocess import dummy_preprocess
+preprocess = dummy_preprocess() # object of dummy preprocess to use for preprocessing
 
 predict_router = APIRouter(prefix="/predict")
 
@@ -24,7 +27,10 @@ def post(img : UploadFile = File(...)):
         return {"error" : "Invalid image format. Only JPEG and PNG are supported."}
    
     #preprocess image 
+    image = preprocess.preprocess(image)
     #use model to predict class and confidence
+    prediction, confidence = model.predict(image)
+
     #return json with results from model
-    return {"prediction" : "AI generated image","confidence":0.9} 
+    return {"prediction" : prediction,"confidence":confidence} 
     
