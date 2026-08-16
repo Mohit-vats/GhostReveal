@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --color-paper: #f6f5f2;
+  --color-paper-line: #dad8d2;
+  --color-ink: #14171a;
+  --color-ink-soft: #5b5f66;
+  --color-accent: #3a3af0;
+  --color-accent-soft: #ebebfd;
+  --color-signal-real: #1f9d6c;
+  --color-signal-real-soft: #e7f5ee;
+  --color-signal-ai: #e0432f;
+  --color-signal-ai-soft: #fcebe8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  margin: 0;
+  min-height: 100vh;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background-color: var(--color-paper);
+  background-image: radial-gradient(var(--color-paper-line) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+@keyframes scan-sweep {
+  0% { top: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.animate-scan {
+  animation: scan-sweep 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-scan {
+    animation: none;
+  }
+}

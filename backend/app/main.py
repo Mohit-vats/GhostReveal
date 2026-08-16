@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
 
 from backend.app.routes.predict import predict_router
 
 app = FastAPI()
+
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 app.include_router(predict_router)
 
