@@ -2,21 +2,6 @@
 
 React + Vite + Tailwind CSS v4 frontend for the GhostReveal AI-image detector.
 
-## ⚠️ Backend change required first
-
-Your FastAPI backend (`backend/app/main.py`) doesn't have CORS enabled yet.
-The browser will block requests from this frontend until you add:
-
-```python
-from fastapi.middleware.cors import CORSMiddleware
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],       # tighten this later (e.g. to your deployed frontend URL)
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-```
 
 ## Getting started
 
@@ -26,8 +11,7 @@ npm run dev
 ```
 
 Runs at `http://localhost:5173` by default. The backend is expected at
-`http://localhost:8000` (set in `.env` via `VITE_API_BASE_URL` — change it there
-if your backend runs elsewhere).
+`http://localhost:8000` 
 
 ## Project structure
 
@@ -44,7 +28,7 @@ src/
   index.css               - Tailwind v4 theme tokens (colors, fonts) + scan-line keyframes
 ```
 
-## How it matches your API
+## How it connects with API
 
 Request: `POST {VITE_API_BASE_URL}/predict/` as `multipart/form-data`, field name `img`
 (matches `UploadFile = File(...)` param name in `predict.py`).
