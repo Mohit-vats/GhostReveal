@@ -1,10 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../components/Logo";
+
+// Backend may send grad_cam as a bare base64 string or a full data URI.
+// Normalize so <img src> always gets something it can render.
+function toImageSrc(value) {
+  if (!value) return null;
+  return value.startsWith("data:") ? value : `data:image/png;base64,${value}`;
+}
 
 export default function Result() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const [showGradCam, setShowGradCam] = useState(false);
 
   useEffect(() => {
     if (!state) navigate("/", { replace: true });
@@ -12,9 +20,15 @@ export default function Result() {
 
   if (!state) return null;
 
-  const { prediction, confidence, previewUrl } = state;
+  const { prediction, confidence, previewUrl, gradCam } = state;
+  const gradCamSrc = toImageSrc(gradCam);
   const isReal = /real/i.test(prediction || "");
   const pct = Math.round((confidence ?? 0) * 1000) / 10; // one decimal place
+
+  const displayedSrc = showGradCam && gradCamSrc ? gradCamSrc : previewUrl;
+  const displayedAlt = showGradCam && gradCamSrc
+    ? "Grad-CAM heatmap highlighting the regions the model focused on"
+    : "Analyzed upload";
 
   const signal = isReal
     ? {
@@ -45,13 +59,16 @@ export default function Result() {
       </header>
 
       <main className="flex flex-1 flex-col justify-center gap-7 pb-16">
-        {previewUrl && (
-          <div className={`mx-auto w-full max-w-[360px] overflow-hidden rounded-2xl ${signal.ring}`}>
+        {displayedSrc && (
+          <div className={`relative mx-auto w-full max-w-[360px] overflow-hidden rounded-2xl ${signal.ring}`}>
             <img
-              src={previewUrl}
-              alt="Analyzed upload"
+              src={displayedSrc}
+              alt={displayedAlt}
               className="aspect-square w-full object-cover"
             />
+            <span className="absolute left-3 top-3 rounded-full bg-ink/70 px-2.5 py-1 font-mono text-[10px] font-medium tracking-wide text-paper backdrop-blur-sm">
+              {showGradCam && gradCamSrc ? "GRAD-CAM" : "ORIGINAL"}
+            </span>
           </div>
         )}
 
@@ -78,6 +95,17 @@ export default function Result() {
             />
           </div>
         </div>
+
+        {gradCamSrc && (
+          <button
+            onClick={() => setShowGradCam((prev) => !prev)}
+            className="w-full rounded-xl border border-accent/30 bg-accent-soft py-3.5 text-center font-display
+              text-[15px] font-medium text-accent transition-colors hover:bg-accent/10 focus-visible:outline
+              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+          >
+            {showGradCam ? "Show original image" : "Check Grad-CAM"}
+          </button>
+        )}
 
         <Link
           to="/"

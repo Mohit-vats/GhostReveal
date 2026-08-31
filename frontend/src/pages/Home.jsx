@@ -33,6 +33,7 @@ export default function Home() {
         state: {
           prediction: result.prediction,
           confidence: result.confidence,
+          gradCam: result.grad_cam,
           previewUrl,
         },
       });
