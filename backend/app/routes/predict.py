@@ -4,8 +4,6 @@ import base64
 from io import BytesIO
 
 from backend.app.utils.predict_utils import validateImageType
-from models.dummy_model import dummy_model
-model = dummy_model() # object of dummy model to use for prediction
 from models.final_interface import load_model, preprocess_image, predict
 model = load_model() # object of final model to use for prediction
 
@@ -27,10 +25,7 @@ def post(img : UploadFile = File(...)):
     #validate image format
     if not validateImageType(image):
         return {"error" : "Invalid image format. Only JPEG and PNG are supported."}
-   
-    #preprocess image 
-    # image = preprocess_image(image)
-    #use model to predict class and confidence
+    
     prediction, confidence ,grad_cam = predict(image,model)
 
     #return json with results from model
