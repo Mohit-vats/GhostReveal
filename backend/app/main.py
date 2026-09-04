@@ -10,6 +10,10 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 
 app.include_router(predict_router)
 
+@app.get("/")
+def root():
+    return {"service": "GhostReveal API", "status": "running"}
+
 @app.get("/health")
 def check_health():
     return {"status": "healthy"}
