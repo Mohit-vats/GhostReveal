@@ -1,4 +1,4 @@
-# GhostReveal 👻
+# GhostReveal 
 
 **See through the pixels.** GhostReveal is an AI-generated image detection system. Upload a photo and it tells you whether the image is real or AI-generated, with a confidence score and a Grad-CAM heatmap showing *which* regions of the image drove the model's decision.
 
